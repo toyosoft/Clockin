@@ -1,0 +1,437 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+.phone{width:340px;margin:1.5rem auto;background:#0A0A0F;border-radius:36px;padding:12px;border:1px solid #222;}
+.screen{background:#0F0F18;border-radius:26px;overflow:hidden;min-height:680px;position:relative;}
+.notch{width:90px;height:28px;background:#0A0A0F;border-radius:0 0 16px 16px;margin:0 auto 0;position:relative;z-index:10;}
+.content{padding:0 20px 32px;}
+
+.time-hero{text-align:center;padding:20px 0 24px;}
+.time-big{font-size:52px;font-weight:300;color:#F0EFF8;letter-spacing:-2px;line-height:1;}
+.date-sub{font-size:13px;color:#5A5A7A;margin-top:6px;letter-spacing:0.5px;}
+
+.status-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:20px;}
+.pill-idle{background:#1A1A2E;color:#5A5A7A;border:0.5px solid #2A2A3E;}
+.pill-ok{background:#0D2818;color:#3DD68C;border:0.5px solid #1A4A30;}
+.pill-warn{background:#2A1A08;color:#F59E0B;border:0.5px solid #4A2A10;}
+.pill-err{background:#2A0808;color:#F87171;border:0.5px solid #4A1010;}
+.pill-dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+.pill-dot.pulse{animation:dp 1.4s ease-in-out infinite;}
+@keyframes dp{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+.step-track{display:flex;gap:6px;margin-bottom:24px;}
+.step-seg{flex:1;height:2px;border-radius:1px;background:#1E1E30;transition:background 0.4s;}
+.step-seg.done{background:#3DD68C;}
+.step-seg.active{background:#7C6FF7;}
+
+.panel{background:#161622;border:0.5px solid #252535;border-radius:20px;padding:18px;margin-bottom:12px;}
+.panel-label{font-size:11px;color:#45456A;letter-spacing:0.8px;margin-bottom:14px;text-transform:uppercase;}
+
+.row-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:0.5px solid #1E1E30;}
+.row-item:last-child{border-bottom:none;}
+.row-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.icon-purple{background:#1E1A3E;color:#9D95F5;}
+.icon-teal{background:#0A2218;color:#3DD68C;}
+.icon-amber{background:#271900;color:#F59E0B;}
+.icon-red{background:#250808;color:#F87171;}
+.row-body{flex:1;min-width:0;}
+.row-title{font-size:14px;color:#D0CFEA;font-weight:500;}
+.row-sub{font-size:12px;color:#45456A;margin-top:2px;}
+.row-badge{font-size:11px;padding:3px 10px;border-radius:10px;white-space:nowrap;flex-shrink:0;}
+.badge-ok{background:#0D2818;color:#3DD68C;}
+.badge-pending{background:#1E1A3E;color:#9D95F5;}
+.badge-err{background:#250808;color:#F87171;}
+.badge-warn{background:#271900;color:#F59E0B;}
+
+.cam-frame{width:100%;aspect-ratio:3/4;background:#0A0A14;border-radius:16px;position:relative;overflow:hidden;margin-bottom:14px;display:flex;align-items:center;justify-content:center;}
+.cam-placeholder-inner{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.cam-placeholder-inner i{font-size:32px;color:#2A2A45;}
+.cam-placeholder-inner span{font-size:13px;color:#2A2A45;}
+.face-guide{width:130px;height:170px;border:2px solid #7C6FF7;border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.6;}
+.face-guide.scanning{animation:sg 1.8s ease-in-out infinite;}
+@keyframes sg{0%,100%{border-color:#7C6FF7;opacity:0.6;}50%{border-color:#3DD68C;opacity:1;}}
+.corner{width:16px;height:16px;position:absolute;border-color:#7C6FF7;border-style:solid;opacity:0.8;}
+.c-tl{top:18px;left:18px;border-width:2px 0 0 2px;border-radius:4px 0 0 0;}
+.c-tr{top:18px;right:18px;border-width:2px 2px 0 0;border-radius:0 4px 0 0;}
+.c-bl{bottom:18px;left:18px;border-width:0 0 2px 2px;border-radius:0 0 0 4px;}
+.c-br{bottom:18px;right:18px;border-width:0 2px 2px 0;border-radius:0 0 4px 0;}
+.cam-result-bar{position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:rgba(10,10,20,0.85);}
+.cam-result-bar span{font-size:12px;color:#3DD68C;}
+
+.btn-main{width:100%;padding:15px;border-radius:14px;border:none;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity 0.15s,transform 0.1s;letter-spacing:0.2px;}
+.btn-main:active{transform:scale(0.97);}
+.btn-main:disabled{opacity:0.3;cursor:not-allowed;}
+.btn-purple{background:#7C6FF7;color:#fff;}
+.btn-teal{background:#1D9E75;color:#fff;}
+.btn-outline{background:transparent;color:#7C6FF7;border:0.5px solid #7C6FF7;}
+.btn-sm{padding:10px 16px;border-radius:10px;font-size:13px;flex:1;}
+
+.info-row{display:flex;gap:8px;margin-bottom:12px;}
+.info-chip{flex:1;background:#0F0F1E;border:0.5px solid #1E1E30;border-radius:12px;padding:10px 12px;}
+.info-chip-label{font-size:11px;color:#45456A;margin-bottom:3px;}
+.info-chip-val{font-size:13px;color:#D0CFEA;font-weight:500;}
+
+.success-ring{width:64px;height:64px;border-radius:50%;background:#0D2818;border:1.5px solid #3DD68C;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.success-ring i{font-size:28px;color:#3DD68C;}
+.confirm-title{text-align:center;font-size:18px;font-weight:500;color:#F0EFF8;margin-bottom:4px;}
+.confirm-sub{text-align:center;font-size:13px;color:#45456A;margin-bottom:20px;}
+
+.log-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:0.5px solid #1A1A28;}
+.log-row:last-child{border-bottom:none;}
+.log-time{font-size:13px;color:#D0CFEA;}
+.log-name{font-size:12px;color:#45456A;margin-top:1px;}
+
+.nav-bar{display:flex;border-top:0.5px solid #1E1E30;margin:0 -20px;padding:12px 20px 4px;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;color:#45456A;cursor:pointer;}
+.nav-item.active{color:#7C6FF7;}
+.nav-item i{font-size:20px;}
+
+video,canvas{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;}
+</style>
+
+<h2 class="sr-only">ระบบเช็คเวลาเข้างาน UI ทันสมัย</h2>
+
+<div class="phone">
+  <div class="screen">
+    <div class="notch"></div>
+    <div class="content">
+
+      <div class="time-hero">
+        <div class="time-big" id="clock">08:47</div>
+        <div class="date-sub" id="datestr">วันจันทร์, 16 มิถุนายน 2026</div>
+        <div style="margin-top:12px;">
+          <span class="status-pill pill-idle" id="main-pill">
+            <span class="pill-dot"></span>
+            <span id="pill-text">รอเช็คอิน</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="step-track">
+        <div class="step-seg active" id="s1"></div>
+        <div class="step-seg" id="s2"></div>
+        <div class="step-seg" id="s3"></div>
+      </div>
+
+      <div id="view-main">
+        <div class="panel">
+          <div class="panel-label">สถานะระบบ</div>
+          <div class="row-item">
+            <div class="row-icon icon-purple"><i class="ti ti-map-pin" aria-hidden="true"></i></div>
+            <div class="row-body">
+              <div class="row-title">ตำแหน่ง GPS</div>
+              <div class="row-sub" id="gps-sub-text">ยังไม่ตรวจสอบ</div>
+            </div>
+            <span class="row-badge badge-pending" id="gps-badge">รอ</span>
+          </div>
+          <div class="row-item">
+            <div class="row-icon icon-teal" id="face-icon-box"><i class="ti ti-face-id" aria-hidden="true"></i></div>
+            <div class="row-body">
+              <div class="row-title">ใบหน้า AI</div>
+              <div class="row-sub" id="face-sub-text">รอผลการถ่ายภาพ</div>
+            </div>
+            <span class="row-badge badge-pending" id="face-badge">รอ</span>
+          </div>
+          <div class="row-item" style="border-bottom:none;">
+            <div class="row-icon icon-amber"><i class="ti ti-clock" aria-hidden="true"></i></div>
+            <div class="row-body">
+              <div class="row-title">เวลาทำงานวันนี้</div>
+              <div class="row-sub">เริ่ม 08:30 — สิ้นสุด 17:30</div>
+            </div>
+            <span class="row-badge badge-warn">ปกติ</span>
+          </div>
+        </div>
+
+        <div id="gps-info-row" class="info-row" style="display:none;">
+          <div class="info-chip"><div class="info-chip-label">ความแม่นยำ</div><div class="info-chip-val" id="acc-val">—</div></div>
+          <div class="info-chip"><div class="info-chip-label">ห่างจากออฟฟิศ</div><div class="info-chip-val" id="dist-val">—</div></div>
+        </div>
+
+        <div id="gps-err-box" style="display:none;background:#1A0808;border:0.5px solid #3A1010;border-radius:12px;padding:12px 14px;margin-bottom:12px;">
+          <div style="font-size:13px;color:#F87171;" id="gps-err-msg"></div>
+        </div>
+
+        <button class="btn-main btn-purple" id="btn-gps" onclick="doGPS()">
+          <i class="ti ti-current-location" aria-hidden="true"></i>
+          <span>ตรวจสอบตำแหน่ง</span>
+        </button>
+      </div>
+
+      <div id="view-cam" style="display:none;">
+        <div class="cam-frame" id="cam-frame">
+          <div class="cam-placeholder-inner" id="cam-ph">
+            <i class="ti ti-camera-off" aria-hidden="true"></i>
+            <span>กล้องยังไม่เปิด</span>
+          </div>
+          <video id="vid" autoplay playsinline muted style="display:none;position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"></video>
+          <canvas id="cnv" style="display:none;position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"></canvas>
+          <div class="face-guide" id="face-ring" style="display:none;"></div>
+          <div class="corner c-tl" id="ca" style="display:none;"></div>
+          <div class="corner c-tr" id="cb" style="display:none;"></div>
+          <div class="corner c-bl" id="cc" style="display:none;"></div>
+          <div class="corner c-br" id="cd" style="display:none;"></div>
+          <div class="cam-result-bar" id="cam-bar" style="display:none;">
+            <span id="cam-bar-text">ถ่ายภาพสำเร็จ ✓</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;">
+          <button class="btn-main btn-outline btn-sm" id="btn-open-cam" onclick="openCam()">
+            <i class="ti ti-camera" aria-hidden="true"></i> เปิดกล้อง
+          </button>
+          <button class="btn-main btn-purple btn-sm" id="btn-snap" onclick="snap()" style="display:none;">
+            <i class="ti ti-capture" aria-hidden="true"></i> ถ่ายภาพ
+          </button>
+          <button class="btn-main btn-outline btn-sm" id="btn-retry" onclick="retryCam()" style="display:none;">
+            <i class="ti ti-refresh" aria-hidden="true"></i> ถ่ายใหม่
+          </button>
+        </div>
+        <button class="btn-main btn-teal" id="btn-verify" onclick="doAI()" style="display:none;">
+          <i class="ti ti-sparkles" aria-hidden="true"></i> ให้ AI ตรวจสอบ
+        </button>
+        <div id="ai-loading" style="display:none;text-align:center;padding:14px 0;font-size:13px;color:#7C6FF7;">
+          <i class="ti ti-loader" aria-hidden="true" style="font-size:18px;vertical-align:-3px;margin-right:6px;"></i> AI กำลังวิเคราะห์ใบหน้า...
+        </div>
+        <div id="ai-err" style="display:none;background:#1A0808;border:0.5px solid #3A1010;border-radius:12px;padding:12px 14px;margin-top:8px;">
+          <div style="font-size:13px;color:#F87171;" id="ai-err-msg"></div>
+        </div>
+      </div>
+
+      <div id="view-success" style="display:none;">
+        <div style="padding:16px 0;">
+          <div class="success-ring"><i class="ti ti-check" aria-hidden="true"></i></div>
+          <div class="confirm-title">เช็คอินสำเร็จ</div>
+          <div class="confirm-sub" id="confirm-time-text">—</div>
+          <div class="info-row" style="margin-top:0;">
+            <div class="info-chip"><div class="info-chip-label">ห่างออฟฟิศ</div><div class="info-chip-val" id="c-dist">—</div></div>
+            <div class="info-chip"><div class="info-chip-label">ความมั่นใจ AI</div><div class="info-chip-val" id="c-conf">—</div></div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-bottom:12px;">
+          <div class="panel-label">บันทึกวันนี้</div>
+          <div id="log-list">
+            <div style="font-size:13px;color:#45456A;text-align:center;padding:8px 0;">ยังไม่มีบันทึก</div>
+          </div>
+        </div>
+        <button class="btn-main btn-outline" onclick="reset()">
+          <i class="ti ti-refresh" aria-hidden="true"></i> เช็คอินใหม่
+        </button>
+      </div>
+
+    </div>
+
+    <div class="nav-bar">
+      <div class="nav-item active"><i class="ti ti-home" aria-hidden="true"></i><span>หน้าหลัก</span></div>
+      <div class="nav-item"><i class="ti ti-calendar" aria-hidden="true"></i><span>ประวัติ</span></div>
+      <div class="nav-item"><i class="ti ti-chart-bar" aria-hidden="true"></i><span>รายงาน</span></div>
+      <div class="nav-item"><i class="ti ti-user" aria-hidden="true"></i><span>โปรไฟล์</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let gpsData=null,photoData=null,stream=null,logs=[];
+const OFF_LAT=13.7563,OFF_LNG=100.5018,MAX_DIST=200;
+
+function tick(){
+  const n=new Date();
+  document.getElementById('clock').textContent=n.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('datestr').textContent=n.toLocaleDateString('th-TH',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+}
+setInterval(tick,1000);tick();
+
+function haversine(a,b,c,d){
+  const R=6371000,dL=(c-a)*Math.PI/180,dG=(d-b)*Math.PI/180;
+  return R*2*Math.atan2(Math.sqrt(Math.sin(dL/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dG/2)**2),Math.sqrt(1-Math.sin(dL/2)**2-Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dG/2)**2));
+}
+function isMock(acc){return acc===0||acc<1||(acc>=9.999&&acc<=10.001);}
+
+function setPill(cls,txt){
+  const p=document.getElementById('main-pill');
+  p.className='status-pill '+cls;
+  p.querySelector('.pill-dot').className='pill-dot'+(cls==='pill-idle'?'':cls==='pill-ok'?' ':(cls==='pill-warn'?' pulse':' pulse'));
+  document.getElementById('pill-text').textContent=txt;
+}
+
+function doGPS(){
+  const btn=document.getElementById('btn-gps');
+  btn.disabled=true;
+  btn.innerHTML='<i class="ti ti-loader" aria-hidden="true"></i> กำลังรับสัญญาณ...';
+  setPill('pill-idle','กำลังตรวจสอบ GPS...');
+  document.getElementById('gps-err-box').style.display='none';
+  if(!navigator.geolocation){showGPSErr('อุปกรณ์ไม่รองรับ GPS');return;}
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const {latitude:la,longitude:lo,accuracy:ac}=pos.coords;
+    const dist=haversine(la,lo,OFF_LAT,OFF_LNG);
+    const mock=isMock(ac);
+    document.getElementById('gps-info-row').style.display='flex';
+    document.getElementById('acc-val').textContent=Math.round(ac)+' ม.';
+    document.getElementById('dist-val').textContent=Math.round(dist)+' ม.';
+    if(mock){showGPSErr('ตรวจพบ Mock Location — ไม่สามารถเช็คอินได้');return;}
+    if(dist>MAX_DIST){showGPSErr('อยู่นอกพื้นที่ (ห่าง '+Math.round(dist)+' ม.)');return;}
+    gpsData={la,lo,ac,dist};
+    document.getElementById('gps-sub-text').textContent='ยืนยันแล้ว ห่าง '+Math.round(dist)+' ม.';
+    document.getElementById('gps-badge').className='row-badge badge-ok';
+    document.getElementById('gps-badge').textContent='ผ่าน';
+    setPill('pill-ok','ตำแหน่งยืนยันแล้ว');
+    btn.innerHTML='<i class="ti ti-check" aria-hidden="true"></i> ยืนยันตำแหน่งแล้ว';
+    document.getElementById('s1').className='step-seg done';
+    document.getElementById('s2').className='step-seg active';
+    setTimeout(()=>{
+      document.getElementById('view-main').style.display='none';
+      document.getElementById('view-cam').style.display='block';
+      setPill('pill-idle','กรุณาถ่ายภาพใบหน้า');
+    },500);
+  },err=>{
+    showGPSErr('ไม่สามารถรับ GPS: '+(err.code===1?'ถูกปฏิเสธสิทธิ์':'สัญญาณขาด'));
+  },{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+}
+function showGPSErr(msg){
+  document.getElementById('gps-err-msg').textContent=msg;
+  document.getElementById('gps-err-box').style.display='block';
+  document.getElementById('gps-badge').className='row-badge badge-err';
+  document.getElementById('gps-badge').textContent='ล้มเหลว';
+  setPill('pill-err',msg.slice(0,18)+'...');
+  const btn=document.getElementById('btn-gps');
+  btn.disabled=false;
+  btn.innerHTML='<i class="ti ti-refresh" aria-hidden="true"></i> ลองอีกครั้ง';
+}
+
+async function openCam(){
+  try{
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});
+    const v=document.getElementById('vid');
+    v.srcObject=stream;v.style.display='block';
+    document.getElementById('cam-ph').style.display='none';
+    ['face-ring','ca','cb','cc','cd'].forEach(id=>document.getElementById(id).style.display='block');
+    document.getElementById('btn-open-cam').style.display='none';
+    document.getElementById('btn-snap').style.display='flex';
+  }catch(e){showAIErr('ไม่สามารถเปิดกล้อง: '+e.message);}
+}
+function snap(){
+  const v=document.getElementById('vid'),c=document.getElementById('cnv');
+  c.width=v.videoWidth||480;c.height=v.videoHeight||640;
+  c.getContext('2d').drawImage(v,0,0);
+  c.style.display='block';v.style.display='none';
+  if(stream)stream.getTracks().forEach(t=>t.stop());
+  document.getElementById('face-ring').className='face-guide scanning';
+  setTimeout(()=>{
+    document.getElementById('face-ring').style.display='none';
+    ['ca','cb','cc','cd'].forEach(id=>document.getElementById(id).style.display='none');
+    document.getElementById('cam-bar').style.display='block';
+  },700);
+  photoData=c.toDataURL('image/jpeg',0.85);
+  document.getElementById('btn-snap').style.display='none';
+  document.getElementById('btn-retry').style.display='flex';
+  document.getElementById('btn-verify').style.display='flex';
+  document.getElementById('s2').className='step-seg done';
+  document.getElementById('s3').className='step-seg active';
+  setPill('pill-idle','กดตรวจสอบด้วย AI');
+}
+function retryCam(){
+  photoData=null;
+  document.getElementById('cnv').style.display='none';
+  document.getElementById('cam-bar').style.display='none';
+  document.getElementById('btn-retry').style.display='none';
+  document.getElementById('btn-verify').style.display='none';
+  document.getElementById('btn-open-cam').style.display='flex';
+  document.getElementById('ai-err').style.display='none';
+  document.getElementById('s2').className='step-seg active';
+  document.getElementById('s3').className='step-seg';
+  setPill('pill-idle','กรุณาถ่ายภาพใบหน้า');
+}
+
+async function doAI(){
+  if(!photoData)return;
+  document.getElementById('btn-verify').style.display='none';
+  document.getElementById('btn-retry').style.display='none';
+  document.getElementById('ai-loading').style.display='block';
+  document.getElementById('ai-err').style.display='none';
+  setPill('pill-idle','AI กำลังวิเคราะห์...');
+  try{
+    const b64=photoData.split(',')[1];
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',max_tokens:600,
+        messages:[{role:'user',content:[
+          {type:'image',source:{type:'base64',media_type:'image/jpeg',data:b64}},
+          {type:'text',text:'ตรวจสอบใบหน้าสำหรับระบบเช็คเวลาเข้างาน ตอบเป็น JSON เท่านั้น ห้ามมี backtick หรือข้อความอื่น: {"face_detected":true/false,"face_count":0,"confidence":0,"recommendation":"pass/fail/retry","message_th":"ข้อความภาษาไทย"}'}
+        ]}]
+      })
+    });
+    const d=await res.json();
+    const txt=(d.content?.find(b=>b.type==='text')?.text||'{}').replace(/```json|```/g,'').trim();
+    const r=JSON.parse(txt);
+    document.getElementById('ai-loading').style.display='none';
+    if(r.recommendation==='pass'){
+      document.getElementById('face-sub-text').textContent=r.message_th;
+      document.getElementById('face-badge').className='row-badge badge-ok';
+      document.getElementById('face-badge').textContent='ผ่าน';
+      setPill('pill-ok','เช็คอินสำเร็จ');
+      document.getElementById('s3').className='step-seg done';
+      const now=new Date();
+      document.getElementById('c-dist').textContent=Math.round(gpsData.dist)+' ม.';
+      document.getElementById('c-conf').textContent=r.confidence+'%';
+      document.getElementById('confirm-time-text').textContent=now.toLocaleTimeString('th-TH')+' น. — '+now.toLocaleDateString('th-TH');
+      logs.unshift({time:now.toLocaleTimeString('th-TH'),conf:r.confidence});
+      renderLog();
+      setTimeout(()=>{
+        document.getElementById('view-cam').style.display='none';
+        document.getElementById('view-success').style.display='block';
+      },300);
+    }else{
+      document.getElementById('ai-err').style.display='block';
+      document.getElementById('ai-err-msg').textContent=r.message_th||'ไม่ผ่าน กรุณาถ่ายใหม่';
+      document.getElementById('btn-retry').style.display='flex';
+      setPill('pill-err','ไม่ผ่าน กรุณาลองใหม่');
+    }
+  }catch(e){
+    document.getElementById('ai-loading').style.display='none';
+    showAIErr('เชื่อมต่อ AI ไม่ได้: '+e.message);
+    document.getElementById('btn-verify').style.display='flex';
+    document.getElementById('btn-retry').style.display='flex';
+  }
+}
+function showAIErr(msg){
+  document.getElementById('ai-err').style.display='block';
+  document.getElementById('ai-err-msg').textContent=msg;
+}
+function renderLog(){
+  const el=document.getElementById('log-list');
+  if(!logs.length){el.innerHTML='<div style="font-size:13px;color:#45456A;text-align:center;padding:8px 0;">ยังไม่มีบันทึก</div>';return;}
+  el.innerHTML=logs.slice(0,5).map(l=>`<div class="log-row"><div><div class="log-time">${l.time} น.</div><div class="log-name">เช็คอินสำเร็จ</div></div><span class="row-badge badge-ok">AI ${l.conf}%</span></div>`).join('');
+}
+function reset(){
+  gpsData=null;photoData=null;
+  if(stream)stream.getTracks().forEach(t=>t.stop());
+  document.getElementById('view-success').style.display='none';
+  document.getElementById('view-cam').style.display='none';
+  document.getElementById('view-main').style.display='block';
+  ['s1','s2','s3'].forEach((id,i)=>document.getElementById(id).className='step-seg'+(i===0?' active':''));
+  setPill('pill-idle','รอเช็คอิน');
+  const btn=document.getElementById('btn-gps');
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-current-location" aria-hidden="true"></i> ตรวจสอบตำแหน่ง';
+  document.getElementById('gps-info-row').style.display='none';
+  document.getElementById('gps-err-box').style.display='none';
+  document.getElementById('gps-sub-text').textContent='ยังไม่ตรวจสอบ';
+  document.getElementById('gps-badge').className='row-badge badge-pending';
+  document.getElementById('gps-badge').textContent='รอ';
+  document.getElementById('face-sub-text').textContent='รอผลการถ่ายภาพ';
+  document.getElementById('face-badge').className='row-badge badge-pending';
+  document.getElementById('face-badge').textContent='รอ';
+  document.getElementById('vid').style.display='none';
+  document.getElementById('cnv').style.display='none';
+  document.getElementById('cam-ph').style.display='flex';
+  document.getElementById('cam-bar').style.display='none';
+  document.getElementById('face-ring').style.display='none';
+  ['ca','cb','cc','cd'].forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById('btn-open-cam').style.display='flex';
+  document.getElementById('btn-snap').style.display='none';
+  document.getElementById('btn-retry').style.display='none';
+  document.getElementById('btn-verify').style.display='none';
+  document.getElementById('ai-loading').style.display='none';
+  document.getElementById('ai-err').style.display='none';
+}
+</script>
